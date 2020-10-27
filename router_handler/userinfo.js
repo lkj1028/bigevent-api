@@ -3,7 +3,7 @@ const db = require('../db/index')
 const bcrypt = require('bcryptjs')
 
 //获取用户信息
-exports.getUserInfo = (req, res) => {
+module.exports.getUserInfo = (req, res) => {
     const sql = 'select id,username,nickname,email,user_pic from ev_users where id = ?'
     db.query(sql, req.user.id, (err, results) => {
         if (err) return res.cc(err)
@@ -47,5 +47,15 @@ module.exports.updatePassword = (req, res) => {
             if (results.affectedRows !== 1) return res.cc('密码更新失败！')
             res.cc('密码更新成功！', 0)
         })
+    })
+}
+
+//更新头像
+module.exports.updateAvatar = (req, res) => {
+    const sql = 'update ev_users set user_pic=? where id=?'
+    db.query(sql, [req.body.avatar, req.user.id], (err, results) => {
+        if (err) return res.cc(err)
+        if (results.affectedRows !== 1) return res.cc('头像更新失败！')
+        res.cc('更新头像成功', 0)
     })
 }

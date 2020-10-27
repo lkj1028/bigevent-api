@@ -7,6 +7,10 @@ const joi = require('@hapi/joi')
 const userRouter = require('./router/user')
 // 导入并使用用户信息路由模块
 const userinfoRouter = require('./router/userinfo')
+//文章功能
+const artcateRouter = require('./router/artcate')
+//文章管理
+const articleRouter = require('./router/article')
 
 
 // 解决跨域问题
@@ -25,7 +29,8 @@ app.use(express.urlencoded({ extended: false }))
 // 配置解析 json 格式的表单数据的中间件
 app.use(express.json())
 
-
+// 托管静态资源文件
+app.use('/uploads', express.static('./uploads'))
 
 
 //封装res.cc 响应 处理失败 的结果
@@ -46,6 +51,9 @@ app.use('/api', userRouter)
 // 注意：以 /my 开头的接口，都是有权限的接口，需要进行 Token 身份认证
 app.use('/my', userinfoRouter)
 
+app.use('/my/article', artcateRouter)
+
+app.use('/my/article', articleRouter)
 
 
 
