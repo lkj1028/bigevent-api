@@ -26,21 +26,18 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 
+
+
 //封装res.cc 响应 处理失败 的结果
 app.use((req, res, next) => {
     res.cc = (err, status = 1) => {
         res.send({
-            status,
             message: err instanceof Error ? err.message : err,
+            status,
         })
     }
     next()
 })
-
-
-
-
-
 
 
 
@@ -52,9 +49,11 @@ app.use('/my', userinfoRouter)
 
 
 
+
 //错误中间件
 app.use((err, req, res, next) => {
     // return console.log(err);
+    console.log(err);
     if (err instanceof joi.ValidationError) return res.cc(err)
     //身份认证失败
     if (err.name === 'UnauthorizedError') return res.cc('身份认证失败！')
